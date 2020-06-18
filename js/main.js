@@ -55,18 +55,14 @@ var createNewPin = function (templateElement, offerInfo) {
 };
 
 var showOffers = function () {
-  var mapPins = map.querySelector('.map__pins');
-  var similarOffers = createSimilarOffers(mapPins.offsetWidth);
-
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var fragment = document.createDocumentFragment();
   similarOffers.forEach(function (offer) {
     fragment.appendChild(createNewPin(pin, offer));
   });
-  mapPins.appendChild(fragment);
+  mapPinsField.appendChild(fragment);
 };
 
-/*
 var createNewCard = function (templateElement, offerInfo) {
   var element = templateElement.cloneNode(true);
   var offerType = {
@@ -102,15 +98,34 @@ var createNewCard = function (templateElement, offerInfo) {
 
   return element;
 };
-*/
 
-/*
-var showOfferCard = function () {
+var showOfferCard = function (number) {
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-  var card = createNewCard(cardTemplate, similarOffers[0]);
+  var card = createNewCard(cardTemplate, similarOffers[number]);
+  var cardClose = card.querySelector('.popup__close');
+  cardClose.addEventListener('click', closeOfferCard);
+  window.addEventListener('keydown', closeOfferCard);
   map.insertBefore(card, document.querySelector('.map__filters-container'));
+  currentOfferCard = number;
 };
-*/
+
+var closeOfferCard = function () {
+  var card = map.querySelector('.map__card');
+  map.removeChild(card);
+  isOfferCardShown = false;
+  window.removeEventListener('keydown', closeOfferCard);
+  currentOfferCard = -1;
+};
+
+var onSimilarOfferPinClick = function (number) {
+  if (isOfferCardShown && currentOfferCard !== number) {
+    closeOfferCard();
+    showOfferCard(number);
+  } else if (!isOfferCardShown) {
+    showOfferCard(number);
+  }
+  isOfferCardShown = true;
+};
 
 var checkTitle = function () {
   if (adFormTitle.validity.tooShort) {
@@ -225,14 +240,53 @@ var addEventListenersOnFormElements = function () {
   });
 };
 
-var onMainPinPress = function () {
+var addEventListenersOnSimilarOffer = function (mapPin, i) {
+  mapPin.addEventListener('click', function () {
+    onSimilarOfferPinClick(i);
+  });
+  mapPin.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') {
+      onSimilarOfferPinClick(i);
+    }
+  });
+};
+
+var addEventListenersOnSimilarOffers = function () {
+  var mapPins = mapPinsField.querySelectorAll('.map__pin:not(.map__pin--main)');
+  mapPins.forEach(function (elem, index) {
+    addEventListenersOnSimilarOffer(elem, index);
+  });
+};
+
+var afterMainPinPress = function () {
   activateSite();
   writeAdFormAddress();
   addEventListenersOnFormElements();
+  addEventListenersOnSimilarOffers();
+  mainPin.removeEventListener('mousedown', onMainPinMousedown);
+  mainPin.removeEventListener('keydown', onMainPinKeydown);
+};
+
+var onMainPinKeydown = function (evt) {
+  evt.preventDefault();
+  if (evt.key === 'Enter') {
+    afterMainPinPress();
+  }
+};
+
+var onMainPinMousedown = function (evt) {
+  evt.preventDefault();
+  if (evt.button === 0) {
+    afterMainPinPress();
+  }
 };
 
 
 var map = document.querySelector('.map');
+var mapPinsField = map.querySelector('.map__pins');
+var similarOffers = createSimilarOffers(mapPinsField.offsetWidth);
+var isOfferCardShown = false;
+var currentOfferCard = -1;
 var mainPin = map.querySelector('.map__pin--main');
 
 var adForm = document.querySelector('.ad-form');
@@ -251,15 +305,5 @@ writeAdFormAddress();
 setHousePrice();
 checkRoomNumberAndCapacity();
 
-mainPin.addEventListener('mousedown', function (evt) {
-  evt.preventDefault();
-  if (evt.button === 0) {
-    onMainPinPress();
-  }
-});
-mainPin.addEventListener('keydown', function (evt) {
-  evt.preventDefault();
-  if (evt.key === 'Enter') {
-    onMainPinPress();
-  }
-});
+mainPin.addEventListener('mousedown', onMainPinMousedown);
+mainPin.addEventListener('keydown', onMainPinKeydown);
