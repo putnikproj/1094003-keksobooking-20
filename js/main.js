@@ -25,29 +25,27 @@
     window.form.writeAddress();
     window.form.addEventListeners();
     window.pin.addEventListeners();
-    window.map.mainPin.removeEventListener('mousedown', onMainPinMousedown);
-    window.map.mainPin.removeEventListener('keydown', onMainPinKeydown);
   };
 
   var onMainPinKeydown = function (evt) {
     evt.preventDefault();
-    if (evt.key === 'Enter') {
+    if (evt.key === 'Enter' && !window.main.isSiteActivated) {
       afterMainPinPress();
+      window.main.isSiteActivated = true;
     }
   };
 
-  var onMainPinMousedown = function (evt) {
-    evt.preventDefault();
-    if (evt.button === 0) {
-      afterMainPinPress();
-    }
-  };
 
   disableSite();
   window.form.writeAddress();
   window.form.setHousePrice();
   window.form.checkRoomNumberAndCapacity();
 
-  window.map.mainPin.addEventListener('mousedown', onMainPinMousedown);
+  window.map.mainPin.addEventListener('mousedown', window.move.onMainPinMousedown);
   window.map.mainPin.addEventListener('keydown', onMainPinKeydown);
+
+  window.main = {
+    isSiteActivated: false,
+    afterMainPinPress: afterMainPinPress
+  };
 })();

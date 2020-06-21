@@ -37,12 +37,9 @@
     return element;
   };
 
-  var isOfferCardShown = false;
-  var currentOfferCard = -1;
-
   window.card = {
-    isShown: isOfferCardShown,
-    current: currentOfferCard,
+    isShown: false,
+    current: -1,
     createNew: createNewCard
   };
 })();

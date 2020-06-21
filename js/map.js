@@ -12,13 +12,19 @@
     mapPinsField.appendChild(fragment);
   };
 
+  var onWindowKeydown = function (evt) {
+    if (evt.key === 'Escape') {
+      closeOfferCard();
+    }
+  };
+
   var showOfferCard = function (number) {
     var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
     var card = window.card.createNew(cardTemplate, window.data.similarOffers[number]);
     var cardClose = card.querySelector('.popup__close');
 
     cardClose.addEventListener('click', closeOfferCard);
-    window.addEventListener('keydown', closeOfferCard);
+    window.addEventListener('keydown', onWindowKeydown);
     window.card.current = number;
 
     map.insertBefore(card, document.querySelector('.map__filters-container'));
@@ -30,7 +36,7 @@
     map.removeChild(card);
 
     window.card.isShown = false;
-    window.removeEventListener('keydown', closeOfferCard);
+    window.removeEventListener('keydown', onWindowKeydown);
     window.card.current = -1;
   };
 
@@ -42,6 +48,12 @@
     field: map,
     pinsField: mapPinsField,
     mainPin: mainPin,
+    getMainPinCurrentY: function () {
+      return mainPin.offsetTop + window.constants.MAIN_PIN_HEIGHT;
+    },
+    getMainPinCurrentX: function () {
+      return mainPin.offsetLeft + window.constants.MAIN_PIN_WIDTH / 2;
+    },
     showOffers: showOffers,
     showOfferCard: showOfferCard,
     closeOfferCard: closeOfferCard
