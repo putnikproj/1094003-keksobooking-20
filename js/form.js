@@ -56,7 +56,7 @@
   };
 
   var writeAdFormAddress = function () {
-    adFormAdress.value = (window.map.mainPin.offsetLeft - window.pin.MAIN_PIN_WIDTH / 2) + ', ' + (window.map.mainPin.offsetTop - window.pin.MAIN_PIN_HEIGHT);
+    adFormAdress.value = (window.map.getMainPinCurrentX()) + ', ' + (window.map.getMainPinCurrentY());
   };
 
   var addEventListenersOnFormElements = function () {

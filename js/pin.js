@@ -1,16 +1,11 @@
 'use strict';
 
 (function () {
-  var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
-  var MAIN_PIN_WIDTH = 62;
-  var MAIN_PIN_HEIGHT = 84;
-
   var createNewPin = function (templateElement, offerInfo) {
     var element = templateElement.cloneNode(true);
     var elementImage = element.querySelector('img');
 
-    element.style = 'left: ' + (offerInfo.location.x - PIN_WIDTH / 2) + 'px; top: ' + (offerInfo.location.y - PIN_HEIGHT) + 'px;';
+    element.style = 'left: ' + (offerInfo.location.x - window.constants.SIMILAR_PIN_WIDTH / 2) + 'px; top: ' + (offerInfo.location.y - window.constants.SIMILAR_PIN_HEIGHT) + 'px;';
     elementImage.src = offerInfo.author.avatar;
     elementImage.alt = offerInfo.offer.title;
 
@@ -46,10 +41,6 @@
   };
 
   window.pin = {
-    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
-    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    PIN_WIDTH: PIN_WIDTH,
-    PIN_HEIGHT: PIN_HEIGHT,
     createNew: createNewPin,
     addEventListeners: addEventListenersOnSimilarOffers
   };

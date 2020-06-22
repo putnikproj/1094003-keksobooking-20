@@ -7,10 +7,11 @@
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  var createSimilarOffers = function (mapWidth) {
+  var createSimilarOffers = function () {
+    var similarOffers = [];
     for (var i = 0; i < 8; i++) {
-      var locationX = getRandomNumber(0, mapWidth);
-      var locationY = getRandomNumber(130, 630);
+      var locationX = getRandomNumber(window.constants.MIN_PIN_X, window.constants.MAX_PIN_X);
+      var locationY = getRandomNumber(window.constants.MIN_PIN_Y, window.constants.MAX_PIN_Y);
 
       similarOffers[i] = {
         'author': {
@@ -35,10 +36,10 @@
         }
       };
     }
+    return similarOffers;
   };
 
-  var similarOffers = [];
-  createSimilarOffers(window.map.pinsField.offsetWidth);
+  var similarOffers = createSimilarOffers();
 
   window.data = {
     similarOffers: similarOffers
