@@ -16,23 +16,49 @@
     });
 
     window.form.address.readOnly = true;
-
-    window.map.showOffers();
-  };
-
-  var afterMainPinPress = function () {
-    activateSite();
     window.form.writeAddress();
     window.form.addEventListeners();
-    window.pin.addEventListeners();
+
+    if (window.map.similarOffers.length !== 0) {
+      window.map.showOffers();
+      window.pin.addEventListeners();
+    }
   };
 
   var onMainPinKeydown = function (evt) {
     evt.preventDefault();
     if (evt.key === 'Enter' && !window.main.isSiteActivated) {
-      afterMainPinPress();
+      activateSite();
       window.main.isSiteActivated = true;
     }
+  };
+
+  var onSimilarOffersLoadSuccess = function (data) {
+    window.map.similarOffers = data;
+    if (window.main.isSiteActivated) {
+      window.map.showOffers();
+      window.pin.addEventListeners();
+    }
+  };
+
+  var onSimilarOffersLoadError = function (errorMessage) {
+    var errorBlock = document.createElement('div');
+    errorBlock.textContent = errorMessage;
+    errorBlock.style.width = '700px';
+    errorBlock.style.minHeight = '65px';
+    errorBlock.style.backgroundColor = 'white';
+    errorBlock.style.color = 'black';
+    errorBlock.style.border = '2px solid black';
+    errorBlock.style.borderRadius = '5px';
+    errorBlock.style.position = 'absolute';
+    errorBlock.style.textAlign = 'center';
+    errorBlock.style.boxSizing = 'border-box';
+    errorBlock.style.padding = '20px';
+    errorBlock.style.top = '10px';
+    errorBlock.style.left = '50%';
+    errorBlock.style.marginLeft = '-350px';
+    errorBlock.style.zIndex = '10';
+    document.body.appendChild(errorBlock);
   };
 
 
@@ -44,8 +70,10 @@
   window.map.mainPin.addEventListener('mousedown', window.move.onMainPinMousedown);
   window.map.mainPin.addEventListener('keydown', onMainPinKeydown);
 
+  window.backend.load(onSimilarOffersLoadSuccess, onSimilarOffersLoadError);
+
   window.main = {
     isSiteActivated: false,
-    afterMainPinPress: afterMainPinPress
+    activateSite: activateSite
   };
 })();
