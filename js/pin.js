@@ -2,7 +2,7 @@
 
 (function () {
   var createNewPin = function (templateElement, offerInfo) {
-    if (typeof (offerInfo.offer) !== 'undefined' && offerInfo.offer !== null) {
+    if (offerInfo.offer) {
       var element = templateElement.cloneNode(true);
       var elementImage = element.querySelector('img');
 

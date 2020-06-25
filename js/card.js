@@ -2,7 +2,7 @@
 
 (function () {
   var checkField = function (field, fieldChange, data) {
-    if (typeof (data) !== 'undefined' && data !== null && data.length !== 0) {
+    if (data && data.length !== 0) {
       if (fieldChange === 'textContent') {
         field.textContent = data;
 
@@ -11,18 +11,18 @@
 
       } else if (fieldChange === 'features') {
         field.innerHTML = '';
-        for (var i = 0; i < data.length; i++) {
-          field.insertAdjacentHTML('beforeend', '<li class=\"popup__feature popup__feature--' + data[i] + '\"></li>');
-        }
+        data.forEach(function (element) {
+          field.insertAdjacentHTML('beforeend', '<li class=\"popup__feature popup__feature--' + element + '\"></li>');
+        });
 
       } else if (fieldChange === 'photos') {
         var templatePhoto = field.querySelector('.popup__photo');
         field.innerHTML = '';
-        for (i = 0; i < data.length; i++) {
+        data.forEach(function (element) {
           var photo = templatePhoto.cloneNode(true);
-          photo.src = data[i];
+          photo.src = element;
           field.appendChild(photo);
-        }
+        });
       }
     } else {
       field.remove();

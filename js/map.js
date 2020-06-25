@@ -6,7 +6,7 @@
 
     window.map.similarOffers.forEach(function (offer) {
       var newPin = window.pin.createNew(pin, offer);
-      if (newPin !== null) {
+      if (newPin) {
         fragment.appendChild(newPin);
       }
     });
