@@ -52,7 +52,7 @@
 
         if (!window.main.isSiteActivated) {
           window.main.isSiteActivated = true;
-          window.main.afterMainPinPress();
+          window.main.activateSite();
         }
       };
 
