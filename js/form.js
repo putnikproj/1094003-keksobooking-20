@@ -59,6 +59,13 @@
     adFormAdress.value = (window.map.getMainPinCurrentX()) + ', ' + (window.map.getMainPinCurrentY());
   };
 
+  var resetForm = function () {
+    adForm.reset();
+    writeAdFormAddress();
+    setHousePrice();
+    checkRoomNumberAndCapacity();
+  };
+
   var addEventListenersOnFormElements = function () {
     adFormTitle.addEventListener('invalid', checkTitle);
     adFormTitle.addEventListener('input', checkTitle);
@@ -94,6 +101,7 @@
     writeAddress: writeAdFormAddress,
     setHousePrice: setHousePrice,
     checkRoomNumberAndCapacity: checkRoomNumberAndCapacity,
-    addEventListeners: addEventListenersOnFormElements
+    addEventListeners: addEventListenersOnFormElements,
+    resetToDefault: resetForm
   };
 })();

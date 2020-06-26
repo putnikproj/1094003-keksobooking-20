@@ -2,9 +2,25 @@
 
 (function () {
   var disableSite = function () {
+    window.form.resetToDefault();
     window.form.controls.forEach(function (control) {
       control.disabled = true;
     });
+
+    if (similarOffersPins) {
+      similarOffersPins.forEach(function (elem) {
+        elem.remove();
+      });
+      similarOffersPins = null;
+    }
+    if (window.card.isShown) {
+      window.map.closeOfferCard();
+    }
+
+    window.map.field.classList.add('map--faded');
+    window.form.section.classList.add('ad-form--disabled');
+    window.map.mainPin.style.left = window.constants.MAIN_PIN_DEFAULT_X + 'px';
+    window.map.mainPin.style.top = window.constants.MAIN_PIN_DEFAULT_Y + 'px';
   };
 
   var activateSite = function () {
@@ -21,7 +37,7 @@
 
     if (window.map.similarOffers.length !== 0) {
       window.map.showOffers();
-      window.pin.addEventListeners();
+      similarOffersPins = window.pin.addEventListeners();
     }
   };
 
@@ -33,47 +49,29 @@
     }
   };
 
-  var onSimilarOffersLoadSuccess = function (data) {
-    window.map.similarOffers = data;
-    if (window.main.isSiteActivated) {
-      window.map.showOffers();
-      window.pin.addEventListeners();
-    }
-  };
 
-  var onSimilarOffersLoadError = function (errorMessage) {
-    var errorBlock = document.createElement('div');
-    errorBlock.textContent = errorMessage;
-    errorBlock.style.width = '700px';
-    errorBlock.style.minHeight = '65px';
-    errorBlock.style.backgroundColor = 'white';
-    errorBlock.style.color = 'black';
-    errorBlock.style.border = '2px solid black';
-    errorBlock.style.borderRadius = '5px';
-    errorBlock.style.position = 'absolute';
-    errorBlock.style.textAlign = 'center';
-    errorBlock.style.boxSizing = 'border-box';
-    errorBlock.style.padding = '20px';
-    errorBlock.style.top = '10px';
-    errorBlock.style.left = '50%';
-    errorBlock.style.marginLeft = '-350px';
-    errorBlock.style.zIndex = '10';
-    document.body.appendChild(errorBlock);
-  };
-
-
+  var similarOffersPins = null;
   disableSite();
-  window.form.writeAddress();
-  window.form.setHousePrice();
-  window.form.checkRoomNumberAndCapacity();
 
   window.map.mainPin.addEventListener('mousedown', window.move.onMainPinMousedown);
   window.map.mainPin.addEventListener('keydown', onMainPinKeydown);
 
-  window.backend.load(onSimilarOffersLoadSuccess, onSimilarOffersLoadError);
+  window.backend.load(window.responseProcessing.loadOffers.onSuccess, window.responseProcessing.loadOffers.onError);
+
+  window.form.section.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(window.form.section), window.responseProcessing.sendForm.onSuccess, window.responseProcessing.sendForm.onError);
+  });
+
+  window.form.section.addEventListener('reset', function (evt) {
+    evt.preventDefault();
+    window.main.disableSite();
+    window.main.isSiteActivated = false;
+  });
 
   window.main = {
     isSiteActivated: false,
-    activateSite: activateSite
+    activateSite: activateSite,
+    disableSite: disableSite
   };
 })();
