@@ -86,6 +86,7 @@
   var adForm = document.querySelector('.ad-form');
   var adFormControls = adForm.querySelectorAll('input, select, button, textarea');
   var adFormAdress = adForm.querySelector('#address');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
   var adFormTitle = adForm.querySelector('#title');
   var adFormTypeOfHouse = adForm.querySelector('#type');
   var adFormPrice = adForm.querySelector('#price');
@@ -98,6 +99,7 @@
     section: adForm,
     controls: adFormControls,
     address: adFormAdress,
+    resetBtn: adFormReset,
     writeAddress: writeAdFormAddress,
     setHousePrice: setHousePrice,
     checkRoomNumberAndCapacity: checkRoomNumberAndCapacity,

@@ -5,7 +5,7 @@
   var SAVE_URL = 'https://javascript.pages.academy/keksobooking';
   var TIMEOUT = 10000;
 
-  var load = function (onLoad, onError) {
+  var sendRequest = function (method, url, data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
@@ -26,33 +26,22 @@
       onError('Запрос слишком долго выполнялся');
     });
 
-    xhr.open('GET', LOAD_URL);
-    xhr.send();
+    if (method === 'GET') {
+      xhr.open('GET', url);
+      xhr.send();
+    } else if (method === 'POST') {
+      xhr.open('POST', url);
+      xhr.send(data);
+    }
+
+  };
+
+  var load = function (onLoad, onError) {
+    sendRequest('GET', LOAD_URL, '', onLoad, onError);
   };
 
   var save = function (data, onLoad, onError) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-    xhr.timeout = TIMEOUT;
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
-        onLoad();
-      } else {
-        onError();
-      }
-    });
-
-    xhr.addEventListener('error', function () {
-      onError();
-    });
-
-    xhr.addEventListener('timeout', function () {
-      onError();
-    });
-
-    xhr.open('POST', SAVE_URL);
-    xhr.send(data);
+    sendRequest('POST', SAVE_URL, data, onLoad, onError);
   };
 
   window.backend = {
