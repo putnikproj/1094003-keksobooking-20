@@ -2,6 +2,8 @@
 
 (function () {
   var disableSite = function () {
+    window.map.mainPin.style.left = window.constants.MAIN_PIN_DEFAULT_X + 'px';
+    window.map.mainPin.style.top = window.constants.MAIN_PIN_DEFAULT_Y + 'px';
     window.form.resetToDefault();
     window.form.controls.forEach(function (control) {
       control.disabled = true;
@@ -19,8 +21,6 @@
 
     window.map.field.classList.add('map--faded');
     window.form.section.classList.add('ad-form--disabled');
-    window.map.mainPin.style.left = window.constants.MAIN_PIN_DEFAULT_X + 'px';
-    window.map.mainPin.style.top = window.constants.MAIN_PIN_DEFAULT_Y + 'px';
   };
 
   var activateSite = function () {
@@ -63,9 +63,9 @@
     window.backend.save(new FormData(window.form.section), window.responseProcessing.sendForm.onSuccess, window.responseProcessing.sendForm.onError);
   });
 
-  window.form.section.addEventListener('reset', function (evt) {
+  window.form.resetBtn.addEventListener('click', function (evt) {
     evt.preventDefault();
-    window.main.disableSite();
+    disableSite();
     window.main.isSiteActivated = false;
   });
 
