@@ -44,6 +44,7 @@
     mapPins.forEach(function (elem, index) {
       addEventListenersOnSimilarOffer(elem, index);
     });
+    return mapPins;
   };
 
   window.pin = {
