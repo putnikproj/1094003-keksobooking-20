@@ -21,7 +21,7 @@
   };
 
   var showOfferCard = function (number) {
-    var card = window.card.createNew(cardTemplate, window.map.similarOffers[number]);
+    var card = window.card.createNew(cardTemplate, window.map.filteredSimilarOffers[number]);
     var cardClose = card.querySelector('.popup__close');
 
     cardClose.addEventListener('click', closeOfferCard);
