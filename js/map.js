@@ -1,10 +1,10 @@
 'use strict';
 
 (function () {
-  var showOffers = function () {
+  var showOffers = function (offers) {
     var fragment = document.createDocumentFragment();
 
-    window.map.similarOffers.forEach(function (offer) {
+    offers.forEach(function (offer) {
       var newPin = window.pin.createNew(pin, offer);
       if (newPin) {
         fragment.appendChild(newPin);
@@ -55,11 +55,12 @@
     pinsField: mapPinsField,
     mainPin: mainPin,
     similarOffers: [],
+    filteredSimilarOffers: [],
     getMainPinCurrentY: function () {
-      return mainPin.offsetTop + window.constants.MAIN_PIN_HEIGHT;
+      return mainPin.offsetTop + window.constants.MainPin.HEIGHT;
     },
     getMainPinCurrentX: function () {
-      return mainPin.offsetLeft + window.constants.MAIN_PIN_WIDTH / 2;
+      return mainPin.offsetLeft + window.constants.MainPin.WIDTH / 2;
     },
     showOffers: showOffers,
     showOfferCard: showOfferCard,

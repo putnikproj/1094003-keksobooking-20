@@ -6,14 +6,13 @@
       var element = templateElement.cloneNode(true);
       var elementImage = element.querySelector('img');
 
-      element.style = 'left: ' + (offerInfo.location.x - window.constants.SIMILAR_PIN_WIDTH / 2) + 'px; top: ' + (offerInfo.location.y - window.constants.SIMILAR_PIN_HEIGHT) + 'px;';
+      element.style = 'left: ' + (offerInfo.location.x - window.constants.SimilarPin.WIDTH / 2) + 'px; top: ' + (offerInfo.location.y - window.constants.SimilarPin.HEIGHT) + 'px;';
       elementImage.src = offerInfo.author.avatar;
       elementImage.alt = offerInfo.offer.title;
 
       return element;
-    } else {
-      return null;
     }
+    return null;
   };
 
   var onSimilarOfferPinClick = function (number, mapPin) {

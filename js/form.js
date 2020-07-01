@@ -59,6 +59,21 @@
     adFormAdress.value = (window.map.getMainPinCurrentX()) + ', ' + (window.map.getMainPinCurrentY());
   };
 
+  var disableAdform = function () {
+    adFormControls.forEach(function (control) {
+      control.disabled = true;
+    });
+  };
+
+  var enableAdForm = function () {
+    adFormControls.forEach(function (control) {
+      control.disabled = false;
+    });
+
+    adFormAdress.readOnly = true;
+    writeAdFormAddress();
+  };
+
   var resetForm = function () {
     adForm.reset();
     writeAdFormAddress();
@@ -81,6 +96,26 @@
     adFormTimeOut.addEventListener('change', function () {
       adFormTimeIn.value = adFormTimeOut.value;
     });
+
+    adForm.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      window.backend.save(new FormData(adForm), window.responseProcessing.sendForm.onSuccess, window.responseProcessing.sendForm.onError);
+    });
+
+    var onFormResetClick = function (evt) {
+      evt.preventDefault();
+      window.main.disableSite();
+    };
+
+    var onFormResetKeydown = function (evt) {
+      if (evt.key === 'Enter') {
+        evt.preventDefault();
+        window.main.disableSite();
+      }
+    };
+
+    adFormReset.addEventListener('click', onFormResetClick);
+    adFormReset.addEventListener('keydown', onFormResetKeydown);
   };
 
   var adForm = document.querySelector('.ad-form');
@@ -97,13 +132,10 @@
 
   window.form = {
     section: adForm,
-    controls: adFormControls,
-    address: adFormAdress,
-    resetBtn: adFormReset,
     writeAddress: writeAdFormAddress,
-    setHousePrice: setHousePrice,
-    checkRoomNumberAndCapacity: checkRoomNumberAndCapacity,
     addEventListeners: addEventListenersOnFormElements,
-    resetToDefault: resetForm
+    resetToDefault: resetForm,
+    disable: disableAdform,
+    enable: enableAdForm
   };
 })();
