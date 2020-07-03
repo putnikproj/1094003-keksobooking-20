@@ -2,15 +2,33 @@
 
 (function () {
   window.constants = {
-    MIN_PIN_X: 0,
-    MAX_PIN_X: 1200,
-    MIN_PIN_Y: 130,
-    MAX_PIN_Y: 630,
-    SIMILAR_PIN_WIDTH: 50,
-    SIMILAR_PIN_HEIGHT: 70,
-    MAIN_PIN_WIDTH: 66,
-    MAIN_PIN_HEIGHT: 81,
-    MAIN_PIN_DEFAULT_X: 570,
-    MAIN_PIN_DEFAULT_Y: 375,
+    SimilarPin: {
+      AMOUNT: 5,
+      WIDTH: 50,
+      HEIGHT: 70
+    },
+    MainPin: {
+      WIDTH: 66,
+      HEIGHT: 81,
+      DefaultCoords: {
+        X: 570,
+        Y: 375
+      },
+      MinCoords: {
+        X: 0,
+        Y: 130
+      },
+      MaxCoords: {
+        X: 1200,
+        Y: 630
+      }
+    },
+    Requests: {
+      TIMEOUT: 10000,
+      Url: {
+        LOAD: 'https://javascript.pages.academy/keksobooking/data',
+        SAVE: 'https://javascript.pages.academy/keksobooking'
+      }
+    }
   };
 })();

@@ -49,7 +49,6 @@
 
   var onFormSendSuccess = function () {
     window.main.disableSite();
-    window.main.isSiteActivated = false;
     showSuccessMessage();
   };
 
@@ -57,11 +56,17 @@
     showErrorMessage();
   };
 
+  var afterSimilarOffersLoadSuccess = function () {
+    window.map.showOffers(window.map.filteredSimilarOffers);
+    window.filter.enable();
+    window.main.similarOffersPins = window.pin.addEventListeners();
+  };
+
   var onSimilarOffersLoadSuccess = function (data) {
     window.map.similarOffers = data;
+    window.map.filteredSimilarOffers = window.filter.offers.byAmount(window.map.similarOffers);
     if (window.main.isSiteActivated) {
-      window.map.showOffers();
-      window.pin.addEventListeners();
+      afterSimilarOffersLoadSuccess();
     }
   };
 
@@ -96,6 +101,7 @@
     },
     loadOffers: {
       onSuccess: onSimilarOffersLoadSuccess,
+      afterSuccess: afterSimilarOffersLoadSuccess,
       onError: onSimilarOffersLoadError
     }
   };
