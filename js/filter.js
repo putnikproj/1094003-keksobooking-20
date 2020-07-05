@@ -52,7 +52,7 @@
   var filterOffersByAmount = function (offers) {
     var filteredOffers = [];
     for (var i = 0; i < offers.length; i++) {
-      if (i >= window.constants.SimilarPin.AMOUNT) {
+      if (i >= window.constants.PinFilter.AMOUNT) {
         break;
       } else {
         filteredOffers.push(offers[i]);
@@ -76,11 +76,11 @@
     }
     return offers.filter(function (similarOffer) {
       if (mapFilterPrice.value === 'low') {
-        return similarOffer.offer.price < 10000;
+        return similarOffer.offer.price < window.constants.PinFilter.Price.LOW;
       } else if (mapFilterPrice.value === 'middle') {
-        return similarOffer.offer.price >= 10000 && similarOffer.offer.price < 50000;
+        return similarOffer.offer.price >= window.constants.PinFilter.Price.LOW && similarOffer.offer.price < window.constants.PinFilter.Price.HIGH;
       }
-      return similarOffer.offer.price >= 50000;
+      return similarOffer.offer.price >= window.constants.PinFilter.Price.HIGH;
     });
   };
 
@@ -104,16 +104,14 @@
 
   var filterOffersByFeatures = function (offers) {
     return offers.filter(function (similarOffer) {
-      var isOfferRight = true;
       for (var i = 0; i < mapFilterFeatures.length; i++) {
         if (mapFilterFeatures[i].checked) {
           if (similarOffer.offer.features.indexOf(mapFilterFeatures[i].value) === -1) {
-            isOfferRight = false;
-            break;
+            return false;
           }
         }
       }
-      return isOfferRight;
+      return true;
     });
   };
 
