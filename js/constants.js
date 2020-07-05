@@ -3,10 +3,10 @@
 (function () {
   window.constants = {
     SimilarPin: {
-      AMOUNT: 5,
       WIDTH: 50,
       HEIGHT: 70
     },
+
     MainPin: {
       WIDTH: 66,
       HEIGHT: 81,
@@ -23,6 +23,15 @@
         Y: 630
       }
     },
+
+    PinFilter: {
+      AMOUNT: 5,
+      Price: {
+        LOW: 10000,
+        HIGH: 50000
+      }
+    },
+
     Requests: {
       TIMEOUT: 10000,
       Url: {
