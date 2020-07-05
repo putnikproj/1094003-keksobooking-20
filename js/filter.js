@@ -105,10 +105,8 @@
   var filterOffersByFeatures = function (offers) {
     return offers.filter(function (similarOffer) {
       for (var i = 0; i < mapFilterFeatures.length; i++) {
-        if (mapFilterFeatures[i].checked) {
-          if (similarOffer.offer.features.indexOf(mapFilterFeatures[i].value) === -1) {
-            return false;
-          }
+        if (mapFilterFeatures[i].checked && similarOffer.offer.features.indexOf(mapFilterFeatures[i].value) === -1) {
+          return false;
         }
       }
       return true;
