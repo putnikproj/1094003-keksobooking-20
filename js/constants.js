@@ -7,6 +7,14 @@
       HEIGHT: 70
     },
 
+    Preview: {
+      FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
+      HousePhotoBlock: {
+        WIDTH: 70,
+        HEIGHT: 70
+      }
+    },
+
     MainPin: {
       WIDTH: 66,
       HEIGHT: 81,
