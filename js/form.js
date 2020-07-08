@@ -90,13 +90,16 @@
   };
 
   var writeAdFormAddress = function () {
-    adFormAdress.value = (window.map.getMainPinCurrentX()) + ', ' + (window.map.getMainPinCurrentY());
+    var MainPinCurrentY = window.map.getMainPinCurrentY();
+    MainPinCurrentY -= !window.main.isSiteActivated ? window.constants.MainPin.Height.SHARP - window.constants.MainPin.Height.ROUND / 2 : 0;
+    adFormAdress.value = window.map.getMainPinCurrentX() + ', ' + MainPinCurrentY;
   };
 
   var disableAdform = function () {
     adFormControls.forEach(function (control) {
       control.disabled = true;
     });
+    adForm.classList.add('ad-form--disabled');
   };
 
   var enableAdForm = function () {
@@ -104,8 +107,9 @@
       control.disabled = false;
     });
 
-    adFormAdress.readOnly = true;
     writeAdFormAddress();
+    adFormAdress.readOnly = true;
+    adForm.classList.remove('ad-form--disabled');
   };
 
   var resetForm = function () {

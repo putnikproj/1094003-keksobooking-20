@@ -3,44 +3,36 @@
 (function () {
   window.main = {
     isSiteActivated: false,
-    similarOffersPins: null
+    similarOffersPins: []
   };
 
   var disableSite = function () {
-    window.map.mainPin.style.left = window.constants.MainPin.DefaultCoords.X + 'px';
-    window.map.mainPin.style.top = window.constants.MainPin.DefaultCoords.Y + 'px';
+    window.main.isSiteActivated = false;
+
+    window.map.resetMainPinToDefault();
 
     window.form.resetToDefault();
+    window.filter.resetToDefault();
     window.form.disable();
     window.filter.disable();
 
-    if (window.main.similarOffersPins) {
-      window.main.similarOffersPins.forEach(function (elem) {
-        elem.remove();
-      });
-      window.main.similarOffersPins = null;
-    }
-    if (window.card.isShown) {
-      window.map.closeOfferCard();
+    if (window.main.similarOffersPins.length !== 0) {
+      window.map.removeOffers();
     }
 
-    window.map.field.classList.add('map--faded');
-    window.form.section.classList.add('ad-form--disabled');
-
-    window.main.isSiteActivated = false;
+    window.map.closeOfferCard();
+    window.map.disable();
   };
 
   var activateSite = function () {
-    window.map.field.classList.remove('map--faded');
-    window.form.section.classList.remove('ad-form--disabled');
+    window.main.isSiteActivated = true;
 
+    window.map.enable();
     window.form.enable();
 
     if (window.map.similarOffers.length !== 0) {
-      window.responseProcessing.loadOffers.afterSuccess();
+      window.map.showOffers(false);
     }
-
-    window.main.isSiteActivated = true;
   };
 
   var onMainPinKeydown = function (evt) {

@@ -55,7 +55,6 @@
   };
 
   window.card = {
-    isShown: false,
     current: -1,
     shownElement: null,
     createNew: createNewCard

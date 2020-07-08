@@ -15,39 +15,40 @@
     return null;
   };
 
-  var onSimilarOfferPinClick = function (number, mapPin) {
-    if (window.card.isShown && window.card.current !== number) {
+  var onSimilarOfferPinPress = function (number, mapPin) {
+    if (window.card.current !== number) {
       window.map.closeOfferCard(mapPin);
       window.map.showOfferCard(number);
-    } else if (!window.card.isShown) {
-      window.map.showOfferCard(number);
     }
-    mapPin.classList.add('map__pin--active');
+
     window.card.shownElement = mapPin;
-    window.card.isShown = true;
+    window.card.shownElement.classList.add('map__pin--active');
   };
 
-  var addEventListenersOnSimilarOffer = function (mapPin, i) {
+  var addEventListenersOnPin = function (mapPin, i) {
     mapPin.addEventListener('click', function () {
-      onSimilarOfferPinClick(i, mapPin);
+      onSimilarOfferPinPress(i, mapPin);
     });
     mapPin.addEventListener('keydown', function (evt) {
       if (evt.key === 'Enter') {
-        onSimilarOfferPinClick(i, mapPin);
+        onSimilarOfferPinPress(i, mapPin);
       }
     });
   };
 
-  var addEventListenersOnSimilarOffers = function () {
-    var mapPins = window.map.pinsField.querySelectorAll('.map__pin:not(.map__pin--main)');
-    mapPins.forEach(function (elem, index) {
-      addEventListenersOnSimilarOffer(elem, index);
+  var findPinsOnSite = function () {
+    return window.map.pinsField.querySelectorAll('.map__pin:not(.map__pin--main)');
+  };
+
+  var addEventListenersOnPins = function () {
+    window.main.similarOffersPins = findPinsOnSite();
+    window.main.similarOffersPins.forEach(function (elem, index) {
+      addEventListenersOnPin(elem, index);
     });
-    return mapPins;
   };
 
   window.pin = {
     createNew: createNewPin,
-    addEventListeners: addEventListenersOnSimilarOffers
+    addEventListeners: addEventListenersOnPins
   };
 })();

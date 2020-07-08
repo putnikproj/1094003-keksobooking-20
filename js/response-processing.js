@@ -1,72 +1,63 @@
 'use strict';
 
 (function () {
-  var onWindowKeydown = function (evt, message, eventListener) {
-    if (evt.key === 'Escape') {
+  var showMessage = function (isSuccess) {
+    var message;
+    var messageTextBlock;
+    if (isSuccess) {
+      message = successSendTemplate.cloneNode(true);
+      messageTextBlock = message.querySelector('.success__message');
+    } else {
+      message = errorSendTemplate.cloneNode(true);
+      messageTextBlock = message.querySelector('.error__message');
+      var messageButton = message.querySelector('.error__button');
+    }
+    var onMessageKeydown = function (evt) {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        removeMessage(message, onMessageKeydown);
+      }
+    };
+    var onMessageClick = function (evt) {
       evt.preventDefault();
-      message.remove();
-      window.removeEventListener('keydown', eventListener);
+      if (evt.target !== messageTextBlock) {
+        removeMessage(message, onMessageKeydown);
+      }
+    };
+    message.addEventListener('click', onMessageClick);
+    window.addEventListener('keydown', onMessageKeydown);
+    messagePlace.appendChild(message);
+    if (messageButton) {
+      messageButton.focus();
+      messageButton.addEventListener('keydown', function (evt) {
+        if (evt.key === 'Enter') {
+          evt.preventDefault();
+          removeMessage(message, onMessageKeydown);
+        }
+      });
     }
   };
 
-  var onMessageClick = function (evt, message, eventListener) {
-    evt.preventDefault();
+  var removeMessage = function (message, func) {
     message.remove();
-    window.removeEventListener('keydown', eventListener);
-  };
-
-  var showSuccessMessage = function () {
-    var successMessage = successSendTemplate.cloneNode(true);
-
-    var onSuccessMessageClick = function (evt) {
-      onMessageClick(evt, successMessage, onSuccessMessageKeydown);
-    };
-
-    var onSuccessMessageKeydown = function (evt) {
-      onWindowKeydown(evt, successMessage, onSuccessMessageKeydown);
-    };
-
-    successMessage.addEventListener('click', onSuccessMessageClick);
-    window.addEventListener('keydown', onSuccessMessageKeydown);
-    document.body.appendChild(successMessage);
-  };
-
-  var showErrorMessage = function () {
-    var errorMessage = errorSendTemplate.cloneNode(true);
-
-    var onErrorMessageClick = function (evt) {
-      onMessageClick(evt, errorMessage, onErrorMessageKeydown);
-    };
-
-    var onErrorMessageKeydown = function (evt) {
-      onWindowKeydown(evt, errorMessage, onErrorMessageKeydown);
-    };
-
-    errorMessage.addEventListener('click', onErrorMessageClick);
-    window.addEventListener('keydown', onErrorMessageKeydown);
-    errorPlace.appendChild(errorMessage);
+    window.removeEventListener('keydown', func);
   };
 
   var onFormSendSuccess = function () {
     window.main.disableSite();
-    showSuccessMessage();
+    showMessage(true);
   };
 
   var onFormSendError = function () {
-    showErrorMessage();
+    showMessage(false);
   };
 
-  var afterSimilarOffersLoadSuccess = function () {
-    window.map.showOffers(window.map.filteredSimilarOffers);
-    window.filter.enable();
-    window.main.similarOffersPins = window.pin.addEventListeners();
-  };
 
   var onSimilarOffersLoadSuccess = function (data) {
     window.map.similarOffers = data;
     window.map.filteredSimilarOffers = window.filter.offers.byAmount(window.map.similarOffers);
     if (window.main.isSiteActivated) {
-      afterSimilarOffersLoadSuccess();
+      window.map.showOffers(false);
     }
   };
 
@@ -92,7 +83,7 @@
 
   var successSendTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorSendTemplate = document.querySelector('#error').content.querySelector('.error');
-  var errorPlace = document.querySelector('main');
+  var messagePlace = document.querySelector('main');
 
   window.responseProcessing = {
     sendForm: {
@@ -101,7 +92,6 @@
     },
     loadOffers: {
       onSuccess: onSimilarOffersLoadSuccess,
-      afterSuccess: afterSimilarOffersLoadSuccess,
       onError: onSimilarOffersLoadError
     }
   };
