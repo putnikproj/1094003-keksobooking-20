@@ -7,9 +7,11 @@
       HEIGHT: 70
     },
 
-    Preview: {
-      FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
-      HousePhotoBlock: {
+    PreviewImageBlock: {
+      Avatar: {
+        DEFAULT_IMAGE: 'img/muffin-grey.svg'
+      },
+      House: {
         WIDTH: 70,
         HEIGHT: 70
       }

@@ -79,24 +79,28 @@
     writeAdFormAddress();
     setHousePrice();
     checkRoomNumberAndCapacity();
+    adFormAvatarPreview.src = window.constants.PreviewImageBlock.Avatar.DEFAULT_IMAGE;
+    adFormHousePhotoPreview.innerHTML = '';
   };
 
   var previewImage = function (upload, preview) {
     var file = upload.files[0];
-    var fileName = file.name.toLowerCase();
 
-    var matches = window.constants.Preview.FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
-    });
-
-    if (matches) {
+    if (file.type.indexOf('image') !== -1) {
       var reader = new FileReader();
 
       reader.addEventListener('load', function () {
         if (preview.tagName === 'IMG') {
           preview.src = reader.result;
+
         } else if (preview.tagName === 'DIV') {
-          preview.innerHTML = '<img src =\"' + reader.result + '\" width=\"' + window.constants.Preview.HousePhotoBlock.WIDTH + '\" height=\"' + window.constants.Preview.HousePhotoBlock.HEIGHT + '\">';
+          var image = document.createElement('img');
+          image.width = window.constants.PreviewImageBlock.House.WIDTH;
+          image.height = window.constants.PreviewImageBlock.House.HEIGHT;
+          image.src = reader.result;
+
+          preview.innerHTML = '';
+          preview.appendChild(image);
         }
       });
 
@@ -160,7 +164,6 @@
   var adFormTimeOut = adForm.querySelector('#timeout');
   var adFormRoomNumber = adForm.querySelector('#room_number');
   var adFormCapacity = adForm.querySelector('#capacity');
-
   var adFormAvatarUpload = adForm.querySelector('.ad-form__field input[type=file]');
   var adFormAvatarPreview = adForm.querySelector('.ad-form-header__preview img');
   var adFormHousePhotoUpload = adForm.querySelector('.ad-form__upload input[type=file]');
