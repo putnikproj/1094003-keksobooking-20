@@ -1,11 +1,15 @@
 'use strict';
 
 (function () {
-  var onWindowResize = function () {
+  var checkCoords = function () {
     if (window.map.getMainPinCurrentX() > window.map.getPinsFieldWidth()) {
       window.map.mainPin.style.left = window.map.getPinsFieldWidth() - window.constants.MainPin.WIDTH / 2 + 'px';
       window.form.writeAddress();
     }
+  };
+
+  var onWindowResize = function () {
+    checkCoords();
   };
 
   var onMainPinMousedown = function (evt) {
@@ -75,6 +79,7 @@
   window.addEventListener('resize', onWindowResize);
 
   window.move = {
-    onMainPinMousedown: onMainPinMousedown
+    onMainPinMousedown: onMainPinMousedown,
+    checkCoords: checkCoords
   };
 })();

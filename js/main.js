@@ -46,6 +46,7 @@
 
 
   disableSite();
+  window.move.checkCoords();
 
   window.map.mainPin.addEventListener('mousedown', window.move.onMainPinMousedown);
   window.map.mainPin.addEventListener('keydown', onMainPinKeydown);
