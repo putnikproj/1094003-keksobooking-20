@@ -30,7 +30,7 @@
   };
 
   var onWindowKeydown = function (evt) {
-    if (evt.key === 'Escape') {
+    if (evt.key === window.constants.KeyboardKeys.ESCAPE) {
       closeOfferCard();
     }
   };
@@ -77,6 +77,18 @@
     map.classList.add('map--faded');
   };
 
+  var getMainPinCurrentY = function () {
+    return mainPin.offsetTop + window.constants.MainPin.Height.SHARP;
+  };
+
+  var getMainPinCurrentX = function () {
+    return mainPin.offsetLeft + window.constants.MainPin.WIDTH / 2;
+  };
+
+  var getPinsFieldWidth = function () {
+    return mapPinsField.offsetWidth;
+  };
+
   var map = document.querySelector('.map');
   var mapPinsField = map.querySelector('.map__pins');
   var mainPin = map.querySelector('.map__pin--main');
@@ -91,12 +103,9 @@
     mainPin: mainPin,
     similarOffers: [],
     filteredSimilarOffers: [],
-    getMainPinCurrentY: function () {
-      return mainPin.offsetTop + window.constants.MainPin.Height.SHARP;
-    },
-    getMainPinCurrentX: function () {
-      return mainPin.offsetLeft + window.constants.MainPin.WIDTH / 2;
-    },
+    getMainPinCurrentY: getMainPinCurrentY,
+    getMainPinCurrentX: getMainPinCurrentX,
+    getPinsFieldWidth: getPinsFieldWidth,
     enable: enableMap,
     disable: disableMap,
     resetMainPinToDefault: resetMainPinToDefault,

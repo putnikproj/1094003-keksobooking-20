@@ -13,7 +13,7 @@
       var messageButton = message.querySelector('.error__button');
     }
     var onMessageKeydown = function (evt) {
-      if (evt.key === 'Escape') {
+      if (evt.key === window.constants.KeyboardKeys.ESCAPE) {
         evt.preventDefault();
         removeMessage(message, onMessageKeydown);
       }
@@ -30,7 +30,7 @@
     if (messageButton) {
       messageButton.focus();
       messageButton.addEventListener('keydown', function (evt) {
-        if (evt.key === 'Enter') {
+        if (evt.key === window.constants.KeyboardKeys.ENTER) {
           evt.preventDefault();
           removeMessage(message, onMessageKeydown);
         }
@@ -56,9 +56,7 @@
   var onSimilarOffersLoadSuccess = function (data) {
     window.map.similarOffers = data;
     window.map.filteredSimilarOffers = window.filter.offers.byAmount(window.map.similarOffers);
-    if (window.main.isSiteActivated) {
-      window.map.showOffers(false);
-    }
+    window.map.showOffers(false);
   };
 
   var onSimilarOffersLoadError = function (errorMessage) {

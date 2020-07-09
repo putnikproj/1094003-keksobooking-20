@@ -1,6 +1,13 @@
 'use strict';
 
 (function () {
+  var onWindowResize = function () {
+    if (window.map.getMainPinCurrentX() > window.map.getPinsFieldWidth()) {
+      window.map.mainPin.style.left = window.map.getPinsFieldWidth() - window.constants.MainPin.WIDTH / 2 + 'px';
+      window.form.writeAddress();
+    }
+  };
+
   var onMainPinMousedown = function (evt) {
     evt.preventDefault();
     if (evt.button === 0) {
@@ -28,8 +35,8 @@
         if (window.map.getMainPinCurrentX() - shift.x < window.constants.MainPin.MinCoords.X) {
           window.map.mainPin.style.left = window.constants.MainPin.MinCoords.X - window.constants.MainPin.WIDTH / 2 + 'px';
 
-        } else if (window.map.getMainPinCurrentX() - shift.x > window.constants.MainPin.MaxCoords.X) {
-          window.map.mainPin.style.left = window.constants.MainPin.MaxCoords.X - window.constants.MainPin.WIDTH / 2 + 'px';
+        } else if (window.map.getMainPinCurrentX() - shift.x > window.map.getPinsFieldWidth()) {
+          window.map.mainPin.style.left = window.map.getPinsFieldWidth() - window.constants.MainPin.WIDTH / 2 + 'px';
 
         } else {
           window.map.mainPin.style.left = (window.map.mainPin.offsetLeft - shift.x) + 'px';
@@ -64,6 +71,8 @@
       document.addEventListener('mouseup', onMouseUp);
     }
   };
+
+  window.addEventListener('resize', onWindowResize);
 
   window.move = {
     onMainPinMousedown: onMainPinMousedown

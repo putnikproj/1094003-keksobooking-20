@@ -2,6 +2,11 @@
 
 (function () {
   window.constants = {
+    KeyboardKeys: {
+      ENTER: 'Enter',
+      ESCAPE: 'Escape'
+    },
+
     SimilarPin: {
       WIDTH: 50,
       HEIGHT: 70

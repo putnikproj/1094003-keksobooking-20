@@ -89,7 +89,7 @@
     window.map.showOffers(true);
   };
 
-  var filterOffers = function () {
+  var onFilterChange = function () {
     window.map.filteredSimilarOffers = window.map.similarOffers;
 
     window.map.filteredSimilarOffers = filterOffersByType(window.map.filteredSimilarOffers);
@@ -103,21 +103,17 @@
   };
 
   var addEventListenersOnFilterControls = function () {
-    mapFilterType.addEventListener('change', window.debounce(filterOffers));
-    mapFilterPrice.addEventListener('change', window.debounce(filterOffers));
-    mapFilterRooms.addEventListener('change', window.debounce(filterOffers));
-    mapFilterGuests.addEventListener('change', window.debounce(filterOffers));
+    mapFiltersForm.addEventListener('change', window.debounce(onFilterChange));
     mapFilterFeatures.forEach(function (feature) {
-      feature.addEventListener('click', window.debounce(filterOffers));
       feature.addEventListener('keydown', function (evt) {
-        if (evt.key === 'Enter') {
+        if (evt.key === window.constants.KeyboardKeys.ENTER) {
           evt.preventDefault();
           if (feature.checked) {
             feature.checked = false;
           } else {
             feature.checked = true;
           }
-          window.debounce(filterOffers)();
+          window.debounce(onFilterChange)();
         }
       });
     });

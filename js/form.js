@@ -91,7 +91,9 @@
 
   var writeAdFormAddress = function () {
     var MainPinCurrentY = window.map.getMainPinCurrentY();
-    MainPinCurrentY -= !window.main.isSiteActivated ? window.constants.MainPin.Height.SHARP - window.constants.MainPin.Height.ROUND / 2 : 0;
+    if (!window.main.isSiteActivated) {
+      MainPinCurrentY -= window.constants.MainPin.Height.SHARP - window.constants.MainPin.Height.ROUND / 2;
+    }
     adFormAdress.value = window.map.getMainPinCurrentX() + ', ' + MainPinCurrentY;
   };
 
@@ -150,21 +152,52 @@
   };
 
   var addEventListenersOnFormElements = function () {
-    adFormTitle.addEventListener('invalid', checkTitle);
-    adFormTitle.addEventListener('input', checkTitle);
-    adFormPrice.addEventListener('invalid', checkHousePrice);
-    adFormPrice.addEventListener('input', checkHousePrice);
-    adFormTypeOfHouse.addEventListener('change', setHousePrice);
-    adFormTypeOfHouse.addEventListener('change', checkHousePrice);
-    adFormRoomNumber.addEventListener('change', checkRoomNumberAndCapacity);
-    adFormCapacity.addEventListener('invalid', checkRoomNumberAndCapacity);
-    adFormCapacity.addEventListener('change', checkRoomNumberAndCapacity);
+    adFormTitle.addEventListener('invalid', function () {
+      checkTitle();
+    });
+    adFormTitle.addEventListener('input', function () {
+      checkTitle();
+    });
+    adFormPrice.addEventListener('invalid', function () {
+      checkHousePrice();
+    });
+    adFormPrice.addEventListener('input', function () {
+      checkHousePrice();
+    });
+    adFormTypeOfHouse.addEventListener('change', function () {
+      setHousePrice();
+    });
+    adFormTypeOfHouse.addEventListener('change', function () {
+      checkHousePrice();
+    });
+    adFormRoomNumber.addEventListener('change', function () {
+      checkRoomNumberAndCapacity();
+    });
+    adFormCapacity.addEventListener('invalid', function () {
+      checkRoomNumberAndCapacity();
+    });
+    adFormCapacity.addEventListener('change', function () {
+      checkRoomNumberAndCapacity();
+    });
 
     adFormTimeIn.addEventListener('change', function () {
       adFormTimeOut.value = adFormTimeIn.value;
     });
     adFormTimeOut.addEventListener('change', function () {
       adFormTimeIn.value = adFormTimeOut.value;
+    });
+
+    adFormFeatures.forEach(function (feature) {
+      feature.addEventListener('keydown', function (evt) {
+        if (evt.key === window.constants.KeyboardKeys.ENTER) {
+          evt.preventDefault();
+          if (feature.checked) {
+            feature.checked = false;
+          } else {
+            feature.checked = true;
+          }
+        }
+      });
     });
 
     adForm.addEventListener('submit', function (evt) {
@@ -178,7 +211,7 @@
     };
 
     var onFormResetKeydown = function (evt) {
-      if (evt.key === 'Enter') {
+      if (evt.key === window.constants.KeyboardKeys.ENTER) {
         evt.preventDefault();
         window.main.disableSite();
       }
@@ -207,6 +240,7 @@
   var adFormTimeOut = adForm.querySelector('#timeout');
   var adFormRoomNumber = adForm.querySelector('#room_number');
   var adFormCapacity = adForm.querySelector('#capacity');
+  var adFormFeatures = adForm.querySelectorAll('.features input');
   var adFormAvatarUpload = adForm.querySelector('.ad-form__field input[type=file]');
   var adFormAvatarPreview = adForm.querySelector('.ad-form-header__preview img');
   var adFormHousePhotoUpload = adForm.querySelector('.ad-form__upload input[type=file]');

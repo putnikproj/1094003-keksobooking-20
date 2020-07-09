@@ -30,14 +30,16 @@
     window.map.enable();
     window.form.enable();
 
-    if (window.map.similarOffers.length !== 0) {
+    if (window.map.similarOffers.length === 0) {
+      window.backend.load(window.responseProcessing.loadOffers.onSuccess, window.responseProcessing.loadOffers.onError);
+    } else {
       window.map.showOffers(false);
     }
   };
 
   var onMainPinKeydown = function (evt) {
     evt.preventDefault();
-    if (evt.key === 'Enter' && !window.main.isSiteActivated) {
+    if (evt.key === window.constants.KeyboardKeys.ENTER && !window.main.isSiteActivated) {
       activateSite();
     }
   };
@@ -50,8 +52,6 @@
 
   window.form.addEventListeners();
   window.filter.addEventListeners();
-
-  window.backend.load(window.responseProcessing.loadOffers.onSuccess, window.responseProcessing.loadOffers.onError);
 
   window.main.activateSite = activateSite;
   window.main.disableSite = disableSite;

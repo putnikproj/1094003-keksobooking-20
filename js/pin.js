@@ -30,7 +30,7 @@
       onSimilarOfferPinPress(i, mapPin);
     });
     mapPin.addEventListener('keydown', function (evt) {
-      if (evt.key === 'Enter') {
+      if (evt.key === window.constants.KeyboardKeys.ENTER) {
         onSimilarOfferPinPress(i, mapPin);
       }
     });
