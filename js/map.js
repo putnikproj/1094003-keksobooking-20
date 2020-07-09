@@ -67,6 +67,7 @@
   var resetMainPinToDefault = function () {
     mainPin.style.left = window.constants.MainPin.DefaultCoords.X + 'px';
     mainPin.style.top = window.constants.MainPin.DefaultCoords.Y + 'px';
+    window.move.checkCoords();
   };
 
   var enableMap = function () {
